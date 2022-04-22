@@ -39,12 +39,13 @@ class NoisyData {
 
         }
 
-        double GaussianNoise(double variance = 0, double mean = 0){
+        double GaussianNoise(double mean){
+            double sigma = 0.01;       
+            std::random_device rd{};
+            std::mt19937 gen{rd()};
+            std::normal_distribution<> d{mean,sigma};
 
-            double sigma = sqrt(variance);            
-            std::default_random_engine generator;
-            std::normal_distribution<double> distribution(mean,sigma);
-            double noise = distribution(generator);
+            double noise = d(gen);
 
             return noise;
 
@@ -53,35 +54,38 @@ class NoisyData {
         void ImuCallback(const sensor_msgs::Imu& imuMsg) {
 
             sensor_msgs::Imu noisyIMUData;
-            noisyIMUData.orientation.x = imuMsg.orientation.x + GaussianNoise();
-            noisyIMUData.orientation.y = imuMsg.orientation.y + GaussianNoise();
-            noisyIMUData.orientation.z = imuMsg.orientation.z + GaussianNoise();
-            noisyIMUData.orientation.x = imuMsg.orientation.w + GaussianNoise();
-            noisyIMUData.angular_velocity.x = imuMsg.angular_velocity.x + GaussianNoise();
-            noisyIMUData.angular_velocity.y = imuMsg.angular_velocity.y + GaussianNoise();
-            noisyIMUData.angular_velocity.z = imuMsg.angular_velocity.z + GaussianNoise();
-            noisyIMUData.linear_acceleration.x = imuMsg.linear_acceleration.x + GaussianNoise();
-            noisyIMUData.linear_acceleration.y = imuMsg.linear_acceleration.y + GaussianNoise();
-            noisyIMUData.linear_acceleration.z = imuMsg.linear_acceleration.z + GaussianNoise();
+            noisyIMUData.header = imuMsg.header;
+            noisyIMUData.orientation.x = GaussianNoise(imuMsg.orientation.x);
+            noisyIMUData.orientation.y = GaussianNoise(imuMsg.orientation.y);
+            noisyIMUData.orientation.z = GaussianNoise(imuMsg.orientation.z);
+            noisyIMUData.orientation.x = GaussianNoise(imuMsg.orientation.w);
+            noisyIMUData.angular_velocity.x = GaussianNoise(imuMsg.angular_velocity.x);
+            noisyIMUData.angular_velocity.y = GaussianNoise(imuMsg.angular_velocity.y);
+            noisyIMUData.angular_velocity.z = GaussianNoise(imuMsg.angular_velocity.z);
+            noisyIMUData.linear_acceleration.x = GaussianNoise(imuMsg.linear_acceleration.x);
+            noisyIMUData.linear_acceleration.y = GaussianNoise(imuMsg.linear_acceleration.y);
+            noisyIMUData.linear_acceleration.z = GaussianNoise(imuMsg.linear_acceleration.z);
             Imupub.publish(noisyIMUData);
         }
 
         void OdomCallback(const nav_msgs::Odometry& odomMsg) {
 
             nav_msgs::Odometry noisyOdomData;
-            noisyOdomData.pose.pose.position.x = odomMsg.pose.pose.position.x + GaussianNoise();
-            noisyOdomData.pose.pose.position.y = odomMsg.pose.pose.position.y + GaussianNoise();
-            noisyOdomData.pose.pose.position.z = odomMsg.pose.pose.position.z + GaussianNoise();
-            noisyOdomData.pose.pose.orientation.x = odomMsg.pose.pose.orientation.x + GaussianNoise();
-            noisyOdomData.pose.pose.orientation.y = odomMsg.pose.pose.orientation.y + GaussianNoise();
-            noisyOdomData.pose.pose.orientation.z = odomMsg.pose.pose.orientation.z + GaussianNoise();
-            noisyOdomData.pose.pose.orientation.w = odomMsg.pose.pose.orientation.w + GaussianNoise();
-            noisyOdomData.twist.twist.linear.x = odomMsg.twist.twist.linear.x + GaussianNoise();
-            noisyOdomData.twist.twist.linear.y = odomMsg.twist.twist.linear.y + GaussianNoise();
-            noisyOdomData.twist.twist.linear.z = odomMsg.twist.twist.linear.z + GaussianNoise();
-            noisyOdomData.twist.twist.angular.x = odomMsg.twist.twist.angular.x + GaussianNoise();
-            noisyOdomData.twist.twist.angular.y = odomMsg.twist.twist.angular.y + GaussianNoise();
-            noisyOdomData.twist.twist.angular.z = odomMsg.twist.twist.angular.z + GaussianNoise();
+            noisyOdomData.header = odomMsg.header;
+            noisyOdomData.child_frame_id = odomMsg.child_frame_id;
+            noisyOdomData.pose.pose.position.x = GaussianNoise(odomMsg.pose.pose.position.x);
+            noisyOdomData.pose.pose.position.y = GaussianNoise(odomMsg.pose.pose.position.y);
+            noisyOdomData.pose.pose.position.z = GaussianNoise(odomMsg.pose.pose.position.z);
+            noisyOdomData.pose.pose.orientation.x = GaussianNoise(odomMsg.pose.pose.orientation.x);
+            noisyOdomData.pose.pose.orientation.y = GaussianNoise(odomMsg.pose.pose.orientation.y);
+            noisyOdomData.pose.pose.orientation.z = GaussianNoise(odomMsg.pose.pose.orientation.z);
+            noisyOdomData.pose.pose.orientation.w = GaussianNoise(odomMsg.pose.pose.orientation.w);
+            noisyOdomData.twist.twist.linear.x = GaussianNoise(odomMsg.twist.twist.linear.x);
+            noisyOdomData.twist.twist.linear.y = GaussianNoise(odomMsg.twist.twist.linear.y);
+            noisyOdomData.twist.twist.linear.z = GaussianNoise(odomMsg.twist.twist.linear.z);
+            noisyOdomData.twist.twist.angular.x = GaussianNoise(odomMsg.twist.twist.angular.x);
+            noisyOdomData.twist.twist.angular.y = GaussianNoise(odomMsg.twist.twist.angular.y);
+            noisyOdomData.twist.twist.angular.z = GaussianNoise(odomMsg.twist.twist.angular.z);
             Odompub.publish(noisyOdomData);
         }
 };
