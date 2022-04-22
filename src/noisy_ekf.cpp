@@ -34,7 +34,7 @@ class NoisyData {
             Odompub = nh_->advertise<nav_msgs::Odometry>("/noisy_odom", 1000);
 
             //initialize your subscribers
-            Imu_sub  = nh_->subscribe("/mobilebase/sensors/imu_data", 1000, &NoisyData::ImuCallback, this);
+            Imu_sub  = nh_->subscribe("mobile_base/sensors/imu_data", 1000, &NoisyData::ImuCallback, this);
             Odom_sub = nh_->subscribe("/odom", 1000, &NoisyData::OdomCallback, this);
 
         }
@@ -63,7 +63,6 @@ class NoisyData {
             noisyIMUData.linear_acceleration.x = imuMsg.linear_acceleration.x + GaussianNoise();
             noisyIMUData.linear_acceleration.y = imuMsg.linear_acceleration.y + GaussianNoise();
             noisyIMUData.linear_acceleration.z = imuMsg.linear_acceleration.z + GaussianNoise();
-            
             Imupub.publish(noisyIMUData);
         }
 
@@ -83,7 +82,6 @@ class NoisyData {
             noisyOdomData.twist.twist.angular.x = odomMsg.twist.twist.angular.x + GaussianNoise();
             noisyOdomData.twist.twist.angular.y = odomMsg.twist.twist.angular.y + GaussianNoise();
             noisyOdomData.twist.twist.angular.z = odomMsg.twist.twist.angular.z + GaussianNoise();
-            
             Odompub.publish(noisyOdomData);
         }
 };
