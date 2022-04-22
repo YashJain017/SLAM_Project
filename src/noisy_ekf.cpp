@@ -8,7 +8,8 @@
 #include <utility>
 #include <algorithm>
 #include <bits/stdc++.h>
-
+#include <random>
+#include <numeric>
 
 
 class NoisyData {
@@ -40,13 +41,10 @@ class NoisyData {
 
         double GaussianNoise(double variance = 0, double mean = 0){
 
-            double sigma = sqrt(variance_);
-
-            std::random_device rd{};
-            std::mt19937 gen{rd()};
-            std::normal_distribution<> d{mean,sigma};
-
-            double noise = d(gen);
+            double sigma = sqrt(variance);            
+            std::default_random_engine generator;
+            std::normal_distribution<double> distribution(mean,sigma);
+            double noise = distribution(generator);
 
             return noise;
 
