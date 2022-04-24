@@ -86,6 +86,10 @@ class NoisyData {
             noisyOdomData.twist.twist.angular.x = GaussianNoise(odomMsg.twist.twist.angular.x);
             noisyOdomData.twist.twist.angular.y = GaussianNoise(odomMsg.twist.twist.angular.y);
             noisyOdomData.twist.twist.angular.z = GaussianNoise(odomMsg.twist.twist.angular.z);
+            for (unsigned int i=0; i<6; i++)
+                for (unsigned int j=0; j<6; j++)
+                    noisyOdomData.pose.covariance[i+1, j+1] = odomMsg.pose.covariance[6*i+j];
+
             Odompub.publish(noisyOdomData);
         }
 };
