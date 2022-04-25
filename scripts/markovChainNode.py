@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from turtle import position
 import rospy
 import json
 from std_msgs.msg import Int64
@@ -9,6 +10,7 @@ import pickle
 import numpy as np
 from nav_msgs.msg import Odometry
 import copy
+import pandas as pd
 
 class MarkovChain:
     def __init__(self):
@@ -20,10 +22,10 @@ class MarkovChain:
         self.stride = 3
         self.predictedPose = (0.0,0.0,0.0)
         rospy.loginfo("Loading Model")
-        with open('/home/yash/catkin_ws/src/SLAM_Project/scripts/model.pkl','rb') as f:
+        with open('/home/yash/catkin_ws/src/SLAM_Project/scripts/model_path1_15.pkl','rb') as f:
             self.model = pickle.load(f)
         rospy.loginfo("finished loading model")
-
+        
     def pose_callback(self, pose_msg):
         """
         Callback function for subscriber. Subscribint to previous pose 
@@ -39,9 +41,9 @@ class MarkovChain:
         Yaw = copy.deepcopy(pose_msg.pose.pose.orientation.w)
         predictedPose = (0.0, 0.0)
         rospy.loginfo("In pose callback")
-
+        
         # read pose values and append to buffer
-        if ((abs(self.previousPosesBuffer[-1][0]- PositionX) > 0.1) or (abs(self.previousPosesBuffer[-1][1]- PositionY) > 0.1) or (abs(self.previousPosesBuffer[-1][2]- Yaw) > 0.1)):
+        if ((abs(self.previousPosesBuffer[-1][0]- PositionX) >= 0.1) or (abs(self.previousPosesBuffer[-1][1]- PositionY) >= 0.1) or (abs(self.previousPosesBuffer[-1][2]- Yaw) >= 0.1)):
             self.previousPosesBuffer.append((round(PositionX, 1),round(PositionY,1), round(Yaw,1)))
         
         print(self.previousPosesBuffer)

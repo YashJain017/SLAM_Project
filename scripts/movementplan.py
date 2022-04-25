@@ -66,66 +66,68 @@ class PathControl:
             vel_msg.angular.y = 0.0
             vel_msg.angular.z = 0.0
         
-        self.velocity_pub.publish(vel_msg)
+        
 #PATH 2
-        """ if (currentTime-self.Inittime) < 1.9*2:
-            vel_msg.linear.x = 0.5
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.0
-        elif (currentTime-self.Inittime) < (1.9+1.5)*2:
-            vel_msg.linear.x = 0.0
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.55
-        elif (currentTime-self.Inittime) < (1.9+1.5+2.25)*2:
-            vel_msg.linear.x = 0.5
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.0
-        elif (currentTime-self.Inittime) < (1.9+1.5+1.5+2.25)*2:
-            vel_msg.linear.x = 0.0
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = -0.45
-        elif (currentTime-self.Inittime) < (1.9+1.5+1.5+2.25+3)*2:
-            vel_msg.linear.x = 0.5
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.0 """
+        # if (currentTime-self.Inittime) < 1.9*2:
+        #     vel_msg.linear.x = 0.5
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.0
+        # elif (currentTime-self.Inittime) < (1.9+1.5)*2:
+        #     vel_msg.linear.x = 0.0
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.55
+        # elif (currentTime-self.Inittime) < (1.9+1.5+2.25)*2:
+        #     vel_msg.linear.x = 0.5
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.0
+        # elif (currentTime-self.Inittime) < (1.9+1.5+1.5+2.25)*2:
+        #     vel_msg.linear.x = 0.0
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = -0.45
+        # elif (currentTime-self.Inittime) < (1.9+1.5+1.5+2.25+3)*2:
+        #     vel_msg.linear.x = 0.5
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.0
 
 #PATH 3        
-"""         if (currentTime-self.Inittime) < (6-1.9)*2:
-            vel_msg.linear.x = -0.5
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.0
-        elif (currentTime-self.Inittime) < (6-1.9+1.5)*2:
-            vel_msg.linear.x = 0.0
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.51
-        elif (currentTime-self.Inittime) < (6-1.9+1.5+8.5)*2:
-            vel_msg.linear.x = 0.5
-            vel_msg.linear.y = 0.0
-            vel_msg.linear.z = 0.0
-            vel_msg.angular.x = 0.0
-            vel_msg.angular.y = 0.0
-            vel_msg.angular.z = 0.0 """
+        # if (currentTime-self.Inittime) < (6-1.9)*2:
+        #     vel_msg.linear.x = -0.5
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.0
+        # elif (currentTime-self.Inittime) < (6-1.9+1.5)*2:
+        #     vel_msg.linear.x = 0.0
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.51
+        # elif (currentTime-self.Inittime) < (6-1.9+1.5+8.5)*2:
+        #     vel_msg.linear.x = 0.5
+        #     vel_msg.linear.y = 0.0
+        #     vel_msg.linear.z = 0.0
+        #     vel_msg.angular.x = 0.0
+        #     vel_msg.angular.y = 0.0
+        #     vel_msg.angular.z = 0.0
+
+        self.velocity_pub.publish(vel_msg)    
         
         
 
