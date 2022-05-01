@@ -16,7 +16,7 @@ class MarkovChain:
     def __init__(self):
         self.counter = 0
         self.pub = rospy.Publisher("markov_chain_pose", PoseStamped, queue_size=10)
-        self.number_subscriber = rospy.Subscriber("odom", Odometry, self.pose_callback)
+        self.number_subscriber = rospy.Subscriber("vote_pose", Odometry, self.pose_callback)
         self.previousPosesBuffer = []
         self.previousPosesBuffer.append((0.0, 0.0, 0.0))
         self.stride = 3
