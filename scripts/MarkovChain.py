@@ -1,16 +1,22 @@
-
 import numpy as np
+import pandas as pd
+import json
+import pickle
 
 def generateTable(data,k=3):
     
     T = {}
     for i in range(len(data)-k):
         X = data[i:i+k]
-        X_hash = str(X).strip('[]')
-        Y = data[i+k]
-        print("|")
-        print(Y)
-        #print("X  %s and Y %s  "%(X,Y))
+        str1=""
+        for j in range(k):
+            str1=str1+"("
+            for m in range(3):
+                str1=str1+"{:.1f}".format(X[j][m])+", "
+            str1=str1.strip(", ")+"), "
+        X_hash = str1.strip(", ")
+        
+        Y = tuple(np.around(data[i+k],decimals=1))
         
         if T.get(X_hash) is None:
             T[X_hash] = {}
@@ -44,8 +50,6 @@ def sample_next(ctx,model,k):
     for i in range (len(array_possible_poses)):
         possible_chars_idx.append(i)
     array_possible_values = np.array(possible_values)
-    print(array_possible_poses)
-    print(possible_values)
     idx = np.random.choice(possible_chars_idx,p=array_possible_values)
     return possible_Chars[idx]
 
@@ -53,10 +57,20 @@ listOfPoses  = [(1,0,0), (2,0,0), (3,0,0), (4,0,0), (5,0,0), (6,0,0), (7,0,0)]
 sequence = ""
 TestData = [(1,0,0),(2,0,0),(4,0,0)]
 
+df=pd.read_csv(r"path3_15combined.csv") #FILEPATH
+df=df.round(decimals=1)
 
+X=np.array(df)
+X=np.around(X,decimals=1)
 
-T = generateTable(listOfPoses)
+T = generateTable(X)
 T = convertFreqIntoProb(T)
-print(T)
 
-print(sample_next(TestData, T, 3))
+with open('model_path3_15_combined.pkl', 'wb') as f:
+    pickle.dump(T, f)
+print("Finished Saving Model")
+
+print("Loading Model")
+with open('model_path3_15_combined.pkl', 'rb') as f:
+    data = pickle.load(f)
+print(data)

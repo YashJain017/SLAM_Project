@@ -22,7 +22,7 @@ class MarkovChain:
         self.stride = 3
         self.predictedPose = (0.0,0.0,0.0)
         rospy.loginfo("Loading Model")
-        with open('/home/yash/catkin_ws/src/SLAM_Project/scripts/model_path1_15.pkl','rb') as f:
+        with open('/home/rhea/workspace/catkin_ws/src/SLAM_Project/scripts/model_path3_15_combined.pkl','rb') as f:
             self.model = pickle.load(f)
         rospy.loginfo("finished loading model")
         
@@ -35,18 +35,23 @@ class MarkovChain:
         """
         new_pose = PoseStamped()
         pose_buf = Odometry()
-        print(pose_msg.pose.pose.position.x)
         PositionX = copy.deepcopy(pose_msg.pose.pose.position.x)
         PositionY = copy.deepcopy(pose_msg.pose.pose.position.y)
         Yaw = copy.deepcopy(pose_msg.pose.pose.orientation.w)
         predictedPose = (0.0, 0.0)
-        rospy.loginfo("In pose callback")
         
         # read pose values and append to buffer
         if ((abs(self.previousPosesBuffer[-1][0]- PositionX) >= 0.1) or (abs(self.previousPosesBuffer[-1][1]- PositionY) >= 0.1) or (abs(self.previousPosesBuffer[-1][2]- Yaw) >= 0.1)):
+            df=pd.read_csv(r"/home/rhea/workspace/catkin_ws/src/SLAM_Project/scripts/path3_15combined.csv")
+            df1=df.copy()
+            position2compare=[PositionX, PositionY, Yaw]
+            df1=((df1-position2compare)**2).sum(axis=1).idxmin()
+            positionclosest=df.loc[df1]
+            PositionX=positionclosest[0]
+            PositionY=positionclosest[1]
+            Yaw=positionclosest[2]
             self.previousPosesBuffer.append((round(PositionX, 1),round(PositionY,1), round(Yaw,1)))
-        
-        print(self.previousPosesBuffer)
+
         
         # call the sample_next function
         self.predictedPose = self.sample_next(self.previousPosesBuffer[-self.stride:], self.model, self.stride)
@@ -54,6 +59,7 @@ class MarkovChain:
         # pop the pose from the predicted list if it exceeds a specific length
         if len(self.previousPosesBuffer) > 10:
             self.previousPosesBuffer.pop(0)
+
         
         # publish the pose message
         new_pose.header.stamp = rospy.Time.now()
@@ -66,14 +72,15 @@ class MarkovChain:
         new_pose.pose.orientation.y = 0.0
         new_pose.pose.orientation.z = 0.0
         new_pose.pose.orientation.w = self.predictedPose[2]
-                
         self.pub.publish(new_pose)
     
     def sample_next(self, ctx, model, k):
         ctx = ctx[-k:]
         ctx = str(ctx).strip('[]')
+     
         if model.get(ctx) is None:
             return (self.predictedPose[0], self.predictedPose[1], self.predictedPose[2])
+
         
         possible_Chars = list(model[ctx].keys())
         possible_values = list(model[ctx].values())
@@ -85,7 +92,8 @@ class MarkovChain:
         
         array_possible_values = np.array(possible_values)
         idx = np.random.choice(possible_chars_idx, p=array_possible_values)
-        
+        self.counter+=1
+        print(self.counter)
         return possible_Chars[idx]
     
 
