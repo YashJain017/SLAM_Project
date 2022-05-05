@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 import json
@@ -16,7 +15,6 @@ def generateTable(data,k=3):
                 str1=str1+"{:.1f}".format(X[j][m])+", "
             str1=str1.strip(", ")+"), "
         X_hash = str1.strip(", ")
-        #print(X_hash)
         
         Y = tuple(np.around(data[i+k],decimals=1))
         
@@ -59,7 +57,7 @@ listOfPoses  = [(1,0,0), (2,0,0), (3,0,0), (4,0,0), (5,0,0), (6,0,0), (7,0,0)]
 sequence = ""
 TestData = [(1,0,0),(2,0,0),(4,0,0)]
 
-df=pd.read_csv(r"path1_15combined.csv") #FILEPATH
+df=pd.read_csv(r"path3_15combined.csv") #FILEPATH
 df=df.round(decimals=1)
 
 X=np.array(df)
@@ -68,12 +66,11 @@ X=np.around(X,decimals=1)
 T = generateTable(X)
 T = convertFreqIntoProb(T)
 
-with open('model_path1_15_test.pkl', 'wb') as f:
+with open('model_path3_15_combined.pkl', 'wb') as f:
     pickle.dump(T, f)
-#print("Finished Saving Model")
-
+print("Finished Saving Model")
 
 print("Loading Model")
-with open('model_path1_15_test.pkl', 'rb') as f:
+with open('model_path3_15_combined.pkl', 'rb') as f:
     data = pickle.load(f)
 print(data)
